@@ -64,10 +64,10 @@ if($output_form)
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
 	<label for="subject">Subject of email : </label>
-	<input type="text" id="subject" name="subject"/><br/>
+	<input type="text" id="subject" name="subject" value="<?php echo $subject; ?>"/><br/>
 	
 	<label for="elvismail">Body of email : </label>
-	<textarea id="elvismail" name="elvismail" rows="8" cols="60"></textarea>
+	<textarea id="elvismail" name="elvismail" rows="8" cols="60"><?php echo $text ?></textarea>
 	
 	<input type="submit" name="submit" value="Submit"/>
 </form>

@@ -10,3 +10,6 @@ create table email_list
 ,	last_name	varchar(30)
 ,	email	varchar(60)
 );
+
+
+select * from email_list;
