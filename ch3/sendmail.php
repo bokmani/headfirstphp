@@ -1,6 +1,6 @@
 <?php
 
-$from = 'test@test.com';
+$from = 'test@qoo10.com';
 
 $subject = $_POST['subject'];
 $text = $_POST['elvismail'];
@@ -21,9 +21,9 @@ while($row = mysqli_fetch_array($result))
 	$msg = "Dear $first_name $last_name, \n $text";
 	$to = $row['email'];
 
-	mail($to, $subject, $message,'From:'.$from);
+	mail($to, $subject, $msg,'From:'.$from);
 	
-	echo 'Email sent to : ' . $to . '<br/>';
+	echo 'Email sent to : ' . $to . ' : ' . $msg . '<br/>';
 }
 
 mysqli_close($dbc);
