@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="utf-8">
 <title>Insert title here</title>
 </head>
 <body>
@@ -15,7 +15,9 @@
 	{
 		foreach ($_POST['todelete'] as $delete_id)
 		{
-			$query = "delete from email_list where id = $delete_id"
+			$query = "delete from email_list where id = $delete_id";
+			
+			mysqli_query($dbc, $query)
 				or die('Query Failed : ' . $query);
 		}
 	
