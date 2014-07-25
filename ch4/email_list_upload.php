@@ -1,5 +1,5 @@
 <?php
-require_once 'CsvFileIterator.php';
+require '../common/CsvFileIterator.php';
 
 $data = new CsvFileIterator('email_list.csv');
 
