@@ -1,9 +1,20 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Guita Wars - High Score Administrator</title>
+<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+<h2> Guita Wars - High Score Administrator</h2>
+
 <?php
 require_once 'appvars.php';
 require_once 'connectvars.php';
 
 
-//DB 연결
+//DB connect
 $dbc = mysqli_connect(DB_HOST, DB_USERS, DB_PASSWORD, DB_NAME);
 
 //query
@@ -27,3 +38,4 @@ echo '</table>';
 
 mysqli_close($dbc);
 ?>
+</body>
