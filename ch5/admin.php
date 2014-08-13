@@ -1,4 +1,6 @@
-
+<?php 
+require_once 'authorize.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,8 +32,15 @@ while ($row = mysqli_fetch_array($data))
 	echo '<td>' . $row['date'] . '</td>';
 	
 	echo '<td>' . $row['score'] . '</td>';
-	echo '<td><a href="removescore.php?id=' . $row['id'] . '&amp;date=' . $row['date'] . '&amp;name=' . $row['name'] . '&amp;scroe=' . $row['score']
- . '&amp;screenshot=' . $row['screenshot'] . '">Remove</a></td></tr>';
+	echo '<td><a href="removescore.php?id=' . $row['id'] . '&amp;date=' . $row['date'] . '&amp;name=' . $row['name'] . '&amp;score=' . $row['score']
+ . '&amp;screenshot=' . $row['screenshot'] . '">Remove</a>';
+	
+	if($row['approved'] == '0')
+	{
+		echo ' / <a href="approvescore.php?id=' . $row['id'] . '&amp;date=' . $row['date'] . '&amp;name=' . $row['name'] . '&amp;score=' . $row['score'] . '&amp;screenshot=' . $row['screenshot'] .'">Approve</a>'; 
+	}
+	
+	echo '</td></tr>';
 	
 }
 echo '</table>';

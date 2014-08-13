@@ -17,7 +17,7 @@ $dbc = mysqli_connect(DB_HOST, DB_USERS, DB_PASSWORD, DB_NAME)
 	or die('Connection Failed');
 
 //score query
-$query = 'select * from guitarwars order by score desc';
+$query = 'select * from guitarwars where approved = 1 order by score desc';
 $data = mysqli_query($dbc, $query)
 	or die('Query Failed');
 ?>

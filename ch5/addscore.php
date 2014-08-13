@@ -14,54 +14,59 @@ require_once 'connectvars.php';
 
 if(isset($_POST['submit']))
 {
+	//Connect to the databasse
+	$dbc = mysqli_connect(DB_HOST, DB_USERS, DB_PASSWORD, DB_NAME)
+	or die('Connection Failed');
+	
 	//POST data get
-	$name = $_POST['name'];
-	$score = $_POST['score'];
-	$screenshot = $_FILES['screenshot']['name'];
-	
-	
+	$name = mysqli_real_escape_string($dbc, $_POST['name']);
+	$score = mysqli_real_escape_string($dbc, $_POST['score']);
+	$screenshot = mysqli_real_escape_string($dbc, $_FILES['screenshot']['name']);	
 	$screenshot_type = $_FILES['screenshot']['type'];
 	$screenshot_size = $_FILES['screenshot']['size'];
+	$ext = end(explode(".", $screenshot));
 	
-	if(!empty($name) && !empty($score) && !empty($screenshot))
+	if(!empty($name) && is_numeric($score) && !empty($screenshot))
 	{
-		if($_FILES['screenshot']['error]'] == 0)
+		$allowedTypes = array("image/gif","image/jpeg","image/jpg","image/pjpeg","image/x-png","image/png");
+		
+		if(in_array($screenshot_type, $allowedTypes) && $screenshot_size >0 && $screenshot_size <= GW_MAXFILESIZE)
 		{
-			//파일정보
-			$target = GW_UPLOADPATH . time() . '.' .$screenshot_type;
-			
-			if(image_move($_FILES['screenshot']['tmp_name'], $target))
+			if($_FILES['screenshot']['error]'] == 0)
 			{
-				//Connect to the databasse
-				$dbc = mysqli_connect(DB_HOST, DB_USERS, DB_PASSWORD, DB_NAME)
-				or die('Connection Failed');
+				//파일정보
+				$screenshot = time() . '.' . $ext;
+				$target = GW_UPLOADPATH . $screenshot;
 					
-				$query = "insert into guitarwars (date, name, score, screenshot) values(NOW(), '$name', $score, '$screenshot')";
-					
-				mysqli_query($dbc, $query)
-				or die('Query Failed');
-			
-				//
-				echo '<p>Thanks for adding your new high score!</p>';
-				echo '<p><strong>Name : </strong>' . $name . '<br/>';
-				echo '<strong>Score : </strong>' . $score . '<br/>';
-				echo '<img src="' . GW_UPLOADPATH . $screenshot . '" alt="Score Image"/></p>';
-				echo '<p><a href="index.php">&lt;&lt; Back to the high scores</a></p>';
-					
-				$name = "";
-				$score = "";
-					
-				mysqli_close($dbc);
+				if(image_move($_FILES['screenshot']['tmp_name'], $target))
+				{						
+					$query = "insert into guitarwars (date, name, score, screenshot) values(NOW(), '$name', $score, '$screenshot')";
+						
+					mysqli_query($dbc, $query)
+					or die('Query Failed');
+						
+					//
+					echo '<p>Thanks for adding your new high score!</p>';
+							echo '<p><strong>Name : </strong>' . $name . '<br/>';
+									echo '<strong>Score : </strong>' . $score . '<br/>';
+									echo '<img src="' . GW_UPLOADPATH . $screenshot . '" alt="Score Image"/></p>';
+									echo '<p><a href="index.php">&lt;&lt; Back to the high scores</a></p>';
+										
+									$name = "";
+									$score = "";
+										
+									mysqli_close($dbc);
+				}
+				else
+				{
+					echo '<p class="error">Sorry, there was a problem uploading your screen shot image.</p>';
+					return;
+				}
 			}
 			else
 			{
-				echo '<p class="error">Sorry, there was a problem uploading your screen shot image.</p>';
-				return;
-			}				
-		}
-		else
-		{
-			echo '<p class="error">The screen shot must be a GIF, JPEG, or PNG image file no greater than ' . (GW_MAXFILESIZE/1024) . 'KB in size.</p>';
+				echo '<p class="error">The screen shot must be a GIF, JPEG, or PNG image file no greater than ' . (GW_MAXFILESIZE/1024) . 'KB in size.</p>';
+			}
 		}
 		
 		//임시파일 삭제
