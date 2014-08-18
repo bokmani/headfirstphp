@@ -1,6 +1,11 @@
 <?php
 
+if(extension_loaded('imagick'))
+	echo 'asdfadfa';
 
+if(extension_loaded('gd'))
+	echo 'adfaaaaaa';
+	return;
 
 header('Content-type:image/jpeg');
 
